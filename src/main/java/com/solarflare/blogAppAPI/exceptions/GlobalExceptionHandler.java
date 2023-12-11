@@ -8,6 +8,8 @@ import org.springframework.web.HttpRequestMethodNotSupportedException;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
+import org.springframework.web.method.annotation.MethodArgumentTypeMismatchException;
+import org.springframework.web.servlet.resource.NoResourceFoundException;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -34,6 +36,18 @@ public class GlobalExceptionHandler {
     @ExceptionHandler(HttpRequestMethodNotSupportedException.class)
     public ResponseEntity<APIResponse> HttpRequestMethodNotSupportedExceptionHandler(HttpRequestMethodNotSupportedException ex){
         APIResponse apiRes = new APIResponse(ex.getMessage(),false);
-        return new ResponseEntity<>(apiRes,HttpStatus.BAD_GATEWAY);
+        return new ResponseEntity<>(apiRes,HttpStatus.BAD_REQUEST);
+    }
+
+    @ExceptionHandler(NoResourceFoundException.class)
+    public ResponseEntity<APIResponse> NoResourceFoundExceptionHandler(NoResourceFoundException ex){
+        APIResponse apiRes = new APIResponse(ex.getMessage(),false);
+        return new ResponseEntity<>(apiRes,HttpStatus.BAD_REQUEST);
+    }
+
+    @ExceptionHandler(MethodArgumentTypeMismatchException.class)
+    public ResponseEntity<APIResponse> MethodArgumentTypeMismatchExceptionHandler(MethodArgumentTypeMismatchException ex){
+        APIResponse apiRes = new APIResponse(ex.getMessage(),false);
+        return new ResponseEntity<>(apiRes,HttpStatus.BAD_REQUEST);
     }
 }
